@@ -1,8 +1,7 @@
 # zbtprinter
 A Cordova driver for Zebra printers
 
-##Usage
-You can send data in ZPL Zebra Programing Language:
+Example:
 
 ```
 cordova.plugins.zbtprinter.print("AC:3F:A4:52:73:C4","^XA^FO10,10^AFN,26,13^FDHello, World!^FS^XZ",
@@ -23,12 +22,10 @@ window.cordova.plugins.zbtprinter.find(
 );
 ```
 
-##Install
-###Cordova
+Install Cordova
 
 ```
-cordova plugin add https://github.com/mmilidoni/zbtprinter.git
+https://github.com/kevbarrios/cordova-zebra-print.git
 ```
-
-##ZPL - Zebra Programming Language
+ZPL - Zebra Programming Language
 For more information about ZPL please see the  [PDF Official Manual](https://support.zebra.com/cpws/docs/zpl/zpl_manual.pdf)
