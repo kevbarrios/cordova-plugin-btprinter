@@ -1,4 +1,4 @@
-# zbtprinter
+# cordova-zebra-print
 A Cordova driver for Zebra printers
 
 Plugin based of: https://github.com/michael79bxl/zbtprinter
