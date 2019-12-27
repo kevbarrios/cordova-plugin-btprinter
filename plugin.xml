@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    id="it.zenitlab.cordova.plugins.zbtprinter"
+    id="com.github.kevbarrios.zbtprinter"
     version="1.0">
 
     <name>ZebraBluetoothPrinter</name>
@@ -20,11 +20,11 @@
       <config-file target="AndroidManifest.xml" parent="/*">
          <uses-permission android:name="android.permission.BLUETOOTH" />
       </config-file>
-	  <source-file src="src/android/it/zenitlab/cordova/plugins/zbtprinter/ZebraBluetoothPrinter.java" target-dir="src/android/it/zenitlab/cordova/plugins/zbtprinter" />
+	  <source-file src="src/android/com/github/kevbarrios/zbtprinter/ZebraBluetoothPrinter.java" target-dir="src/android/com/github/kevbarrios/zbtprinter" />
 
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="ZebraBluetoothPrinter">
-                <param name="android-package" value="it.zenitlab.cordova.plugins.zbtprinter.ZebraBluetoothPrinter" />
+                <param name="android-package" value="com.github.kevbarrios.zbtprinter.ZebraBluetoothPrinter" />
             </feature>
         </config-file>
 
