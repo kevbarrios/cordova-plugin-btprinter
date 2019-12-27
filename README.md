@@ -31,7 +31,7 @@ window.cordova.plugins.zbtprinter.find(
 Install Cordova
 
 ```
-https://github.com/kevbarrios/cordova-zebra-print.git
+cordova plugin add https://github.com/kevbarrios/cordova-zebra-print.git
 ```
 ZPL - Zebra Programming Language
 For more information about ZPL please see the  [PDF Official Manual](https://support.zebra.com/cpws/docs/zpl/zpl_manual.pdf)
