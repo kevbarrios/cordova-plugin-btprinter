@@ -1,5 +1,9 @@
 var exec = require('cordova/exec');
 
-exports.print = function(str, mac, successCallback, errorCallback) {
-    cordova.exec(successCallback, errorCallback, 'ZebraBluetoothPrinter', 'print', [str,mac]);
+exports.print = function(mac, str, successCallback, errorCallback) {
+    cordova.exec(successCallback, errorCallback, 'ZebraBluetoothPrinter', 'print', [mac, str]);
+};
+
+exports.find = function(successCallback, errorCallback) {
+    cordova.exec(successCallback, errorCallback, 'ZebraBluetoothPrinter', 'find', []);
 };
