@@ -1,4 +1,4 @@
-# zbtprinter
+# cordova-plugin-zebra_printer_zpl
 A Cordova driver for Zebra printers
 
 Plugin based of: https://github.com/michael79bxl/zbtprinter
@@ -31,7 +31,8 @@ window.cordova.plugins.zbtprinter.find(
 Install Cordova
 
 ```
-cordova plugin add https://github.com/kevbarrios/zbtprinter.git
+cordova plugin add https://github.com/kevbarrios/cordova-plugin-zebra_printer_zpl.git
+cordova plugin add cordova-plugin-zebra_printer_zpl
 ```
 ZPL - Zebra Programming Language
 For more information about ZPL please see the  [PDF Official Manual](https://support.zebra.com/cpws/docs/zpl/zpl_manual.pdf)
