@@ -35,5 +35,12 @@ cordova plugin add https://github.com/kevbarrios/cordova-plugin-zebra_printer_zp
 
 cordova plugin add cordova-plugin-zebra_printer_zpl
 ```
+
+config.xml
+
+```
+<plugin name="com.github.kevbarrios.zbtprinter" spec="cordova-plugin-zebra_printer_zpl@^1.0.2" />
+```
+
 ZPL - Zebra Programming Language
 For more information about ZPL please see the  [PDF Official Manual](https://support.zebra.com/cpws/docs/zpl/zpl_manual.pdf)
