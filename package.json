@@ -1,6 +1,6 @@
 {
   "version": "1.0.1",
-  "name": "cordova-plugin-zebra_printer",
+  "name": "cordova-plugin-zebra_printer_zpl",
   "description": "Cordova/Phonegap driver for Zebra bluetooth printers",
   "repository": {
     "type": "git",
