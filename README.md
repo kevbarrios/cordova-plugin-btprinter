@@ -32,6 +32,7 @@ Install Cordova
 
 ```
 cordova plugin add https://github.com/kevbarrios/cordova-plugin-zebra_printer_zpl.git
+
 cordova plugin add cordova-plugin-zebra_printer_zpl
 ```
 ZPL - Zebra Programming Language
