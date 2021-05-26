@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="com.github.kevbarrios.zbtprinter"
-    version="1.0.3">
+    version="1.0.4">
 
     <name>ZebraBluetoothPrinter</name>
 	<description>A Cordova/Phonegap driver for Zebra bluetooth printers</description>
@@ -30,6 +30,5 @@
         </config-file>
 
         <source-file src="src/android/ZSDK_ANDROID_API.jar" target-dir="libs"/>
-        <source-file src="src/android/zixng.jar" target-dir="libs"/>
     </platform>
 </plugin>

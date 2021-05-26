@@ -7,3 +7,7 @@ exports.print = function(mac, str, successCallback, errorCallback) {
 exports.find = function(successCallback, errorCallback) {
     cordova.exec(successCallback, errorCallback, 'ZebraBluetoothPrinter', 'find', []);
 };
+
+exports.printImage = function(mac, str, successCallback, errorCallback) {
+    cordova.exec(successCallback, errorCallback, 'ZebraBluetoothPrinter', 'printImage', [mac, str]);
+};
