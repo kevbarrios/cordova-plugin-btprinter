@@ -1,13 +1,13 @@
 {
-  "version": "1.0.4",
-  "name": "cordova-plugin-zebra_printer_zpl",
-  "description": "Cordova/Phonegap driver for Zebra bluetooth printers",
+  "version": "1.0.6",
+  "name": "cordova-plugin-btprinter",
+  "description": "Cordova/Phonegap driver for bluetooth printers",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kevbarrios/cordova-plugin-zebra_printer_zpl.git"
+    "url": "git+https://github.com/kevbarrios/cordova-plugin-btprinter.git"
   },
   "cordova": {
-    "id": "cordova-plugin-zebra_printer_zpl",
+    "id": "cordova-plugin-btprinter",
     "platforms": [
       "android",
       "browser"
@@ -30,13 +30,13 @@
       "version": ">=3.0.0"
     }
   ],
-  "homepage": "https://github.com/kevbarrios/cordova-plugin-zebra_printer_zpl#readme",
+  "homepage": "https://github.com/kevbarrios/cordova-plugin-btprinter#readme",
   "bugs": {
-    "url": "https://github.com/kevbarrios/cordova-plugin-zebra_printer_zpl/issues"
+    "url": "https://github.com/kevbarrios/cordova-plugin-btprinter/issues"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Kevin Barrios",
   "license": "MIT"
 }

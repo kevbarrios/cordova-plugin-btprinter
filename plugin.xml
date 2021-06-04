@@ -1,34 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?><plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    id="com.github.kevbarrios.zbtprinter"
-    version="1.0.4">
+    id="com.kbarrios.btprinter"
+    version="1.0.6">
 
-    <name>ZebraBluetoothPrinter</name>
-	<description>A Cordova/Phonegap driver for Zebra bluetooth printers</description>
+    <name>BluetoothPrinter</name>
+    <description>A Cordova/Phonegap driver for bluetooth printers</description>
     <license>Apache</license>
     <engines>
         <engine name="cordova" version=">=3.0.0" />
-    </engines>    
+    </engines>
 
-    <js-module src="www/zbtprinter.js" name="ZebraBluetoothPrinter">
-        <clobbers target="cordova.plugins.zbtprinter" />
+    <js-module src="www/btprinter.js" name="BluetoothPrinter">
+        <clobbers target="cordova.plugins.btprinter" />
     </js-module>
 
     <!-- android -->
     <platform name="android">
-
-      <config-file target="AndroidManifest.xml" parent="/*">
-         <uses-permission android:name="android.permission.BLUETOOTH" />
-         <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-      </config-file>
-	  <source-file src="src/android/com/github/kevbarrios/zbtprinter/ZebraBluetoothPrinter.java" target-dir="src/android/com/github/kevbarrios/zbtprinter" />
-
+        <config-file target="AndroidManifest.xml" parent="/*">
+            <uses-permission android:name="android.permission.BLUETOOTH" />
+            <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+        </config-file>
+        <source-file src="src/android/com/kbarrios/btprinter/BluetoothPrinter.java" target-dir="src/android/com/kbarrios/btprinter" />
+        
         <config-file target="res/xml/config.xml" parent="/*">
-            <feature name="ZebraBluetoothPrinter">
-                <param name="android-package" value="com.github.kevbarrios.zbtprinter.ZebraBluetoothPrinter" />
+            <feature name="BluetoothPrinter">
+                <param name="android-package" value="com.kbarrios.btprinter.BluetoothPrinter" />
             </feature>
         </config-file>
-
         <source-file src="src/android/ZSDK_ANDROID_API.jar" target-dir="libs"/>
     </platform>
 </plugin>

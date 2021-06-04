@@ -1,9 +1,10 @@
-package com.github.kevbarrios.zbtprinter;
+package com.kbarrios.btprinter;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -21,6 +22,10 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.util.Base64;
 import android.util.Log;
 
@@ -33,34 +38,40 @@ public class ZebraBluetoothPrinter extends CordovaPlugin {
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private static final int REQUEST_ENABLE_BT = 0;
 
-    private OutputStream mmOutputStream;;
-    private InputStream mmInputStream;
-    private Bitmap bitmap;
     private static String[] binaryArray = { "0000", "0001", "0010", "0011", "0100", "0101", "0110", "0111", "1000",
             "1001", "1010", "1011", "1100", "1101", "1110", "1111" };
     private static String hexStr = "0123456789ABCDEF";
-
-    private BluetoothAdapter bluetoothAdapter;
 
     public ZebraBluetoothPrinter() {
     }
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-        if (action.equals("print")) {
+        if (action.equals("find")) {
             try {
-                String mac = args.getString(0);
-                String msg = args.getString(1);
-                sendData(callbackContext, mac, msg);
+                findPrinter(callbackContext);
             } catch (Exception e) {
                 Log.e(LOG_TAG, e.getMessage());
                 e.printStackTrace();
             }
             return true;
         }
-        if (action.equals("find")) {
+        if (action.equals("printZPL")) {
             try {
-                findPrinter(callbackContext);
+                String mac = args.getString(0);
+                String msg = args.getString(1);
+                sendZPL(callbackContext, mac, msg);
+            } catch (Exception e) {
+                Log.e(LOG_TAG, e.getMessage());
+                e.printStackTrace();
+            }
+            return true;
+        }
+        if (action.equals("printText")) {
+            try {
+                String mac = args.getString(0);
+                String msg = args.getString(1);
+                sendText(callbackContext, mac, msg);
             } catch (Exception e) {
                 Log.e(LOG_TAG, e.getMessage());
                 e.printStackTrace();
@@ -83,7 +94,7 @@ public class ZebraBluetoothPrinter extends CordovaPlugin {
 
     public void findPrinter(final CallbackContext callbackContext) {
         cordova.getThreadPool().execute(() -> {
-            bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+            BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
             if (bluetoothAdapter == null) {
                 callbackContext.error("Device doesn't support Bluetooth");
             } else {
@@ -135,9 +146,9 @@ public class ZebraBluetoothPrinter extends CordovaPlugin {
         return printers;
     }
     /*
-     * This will send data to be printed by the bluetooth printer
+     * This will send ZPL to be printed by the bluetooth printer
      */
-    void sendData(final CallbackContext callbackContext, final String mac, final String msg) throws IOException {
+    void sendZPL(final CallbackContext callbackContext, final String mac, final String msg) throws IOException {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -151,7 +162,7 @@ public class ZebraBluetoothPrinter extends CordovaPlugin {
                         // Send the data to printer as a byte array.
                         thePrinterConn.write(msg.getBytes());
                         // Make sure the data got to the printer before closing the connection
-                        Thread.sleep(500);
+                        Thread.sleep(1000);
                         // Close the insecure connection to release resources.
                         thePrinterConn.close();
                         callbackContext.success("Done");
@@ -190,36 +201,98 @@ public class ZebraBluetoothPrinter extends CordovaPlugin {
             throw new ConnectionException("Cannot connected: " + e.getMessage());
         }
     }
-
+    /*
+     * This will send text to be printed by the bluetooth printer
+     */
+    void sendText(final CallbackContext callbackContext, final String mac, final String msg) throws IOException {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                    // If Bluetooth is not on, request that it be enabled.
+                    if (!bluetoothAdapter.isEnabled()) {
+                        Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                        cordova.getActivity().startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+                        callbackContext.error("Bluetooth off");
+                    } else {
+                        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(mac);
+                        bluetoothAdapter.cancelDiscovery();
+                        OutputStream mmOutputStream;
+                        if (device != null) {
+                            BluetoothSocket mSocket;
+                            try {
+                                mSocket = device.createRfcommSocketToServiceRecord(MY_UUID);
+                                // Open the connection - physical connection is established here.
+                                mSocket.connect();
+                                mmOutputStream = mSocket.getOutputStream();
+                                // Send the data to printer.
+                                mmOutputStream.write(msg.getBytes());
+                                // Make sure the data got to the printer before closing the connection
+                                Thread.sleep(1000);
+                                mmOutputStream.flush();
+                                mmOutputStream.close();
+                                mSocket.close();
+                                callbackContext.success("Was successfully printed");
+                            } catch (IOException e) {
+                                callbackContext.error("Socket error: " + e.getMessage());
+                            }
+                        } else {
+                            callbackContext.error("Could not connect to " + mac);
+                        }
+                    }
+                } catch(Exception e){
+                    // Handle communications error here.
+                    callbackContext.error(e.getMessage());
+                }
+            }
+        }).start();
+    }
+    /*
+     * This will send Base64 to be printed by the bluetooth printer
+     */
     void sendBase64(final CallbackContext callbackContext, final String mac, final String msg) throws IOException {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    BluetoothDevice device = bluetoothAdapter.getRemoteDevice(mac);
-                    bluetoothAdapter.cancelDiscovery();
-                    if (device != null) {
-                        BluetoothSocket mSocket = null;
-                        try {
-                            mSocket = device.createRfcommSocketToServiceRecord(MY_UUID);
-                            // Open the connection - physical connection is established here.
-                            mSocket.connect();
-                            mmOutputStream = mSocket.getOutputStream();
-                            mmInputStream = mSocket.getInputStream();
-                            // Send the data to printer.
-                            byte [] data = printBase64(msg);
-                            mmOutputStream.write(data);
-                            // Make sure the data got to the printer before closing the connection
-                            Thread.sleep(5*1000);
-                            mmOutputStream.close();
-                            mmInputStream.close();
-                            mSocket.close();
-                            callbackContext.success("Was successfully printed");
-                        } catch (IOException e) {
-                            callbackContext.error("Socket error: " + e.getMessage());
-                        }
+                    BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                    // If Bluetooth is not on, request that it be enabled.
+                    if (!bluetoothAdapter.isEnabled()) {
+                        Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                        cordova.getActivity().startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+                        callbackContext.error("Bluetooth off");
                     } else {
-                        callbackContext.error("Could not connect to " + mac);
+                        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(mac);
+                        bluetoothAdapter.cancelDiscovery();
+                        OutputStream mmOutputStream;
+                        if (device != null) {
+                            BluetoothSocket mSocket;
+                            try {
+                                mSocket = device.createRfcommSocketToServiceRecord(MY_UUID);
+                                // Open the connection - physical connection is established here.
+                                mSocket.connect();
+                                mmOutputStream = mSocket.getOutputStream();
+                                // Base64 convert
+                                byte[] decodedString = printBase64(msg);
+                                Log.d("WebView", decodedString.toString());
+                                Log.d("msg", msg);
+                                // Send the data to printer.
+                                mmOutputStream.write(decodedString);
+                                // Make sure the data got to the printer before closing the connection
+                                Thread.sleep(1000);
+                                mmOutputStream.flush();
+                                mmOutputStream.close();
+                                mSocket.close();
+                                callbackContext.success("Was successfully printed");
+                            } catch (IOException e) {
+                                callbackContext.error("Socket error: " + e.getMessage());
+                            } catch (Exception e) {
+                                callbackContext.error("Error: " + e.getMessage());
+                            }
+                        } else {
+                            callbackContext.error("Could not connect to " + mac);
+                        }
                     }
                 } catch (Exception e) {
                     // Handle communications error here.
@@ -229,17 +302,17 @@ public class ZebraBluetoothPrinter extends CordovaPlugin {
         }).start();
     }
 
-    // This will send data to bluetooth printer
     private byte[] printBase64(String msg) throws Exception {
         try {
+            String base64Image = msg.split(",")[1];
+            byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
 
-            final String encodedString = msg;
-            final String pureBase64Encoded = encodedString.substring(encodedString.indexOf(",") + 1);
-            final byte[] decodedBytes = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            Bitmap bitmap = decodedByte;
+            int mWidth = bitmap.getWidth();
+            int mHeight = bitmap.getHeight();
 
-            Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-
-            bitmap = decodedBitmap;
+            bitmap = resizeImage(bitmap, mWidth, mHeight);
 
             byte[] bt = decodeBitmapBase64(bitmap);
 
@@ -249,6 +322,29 @@ public class ZebraBluetoothPrinter extends CordovaPlugin {
             Log.e(LOG_TAG, e.getMessage());
             e.printStackTrace();
             throw new Exception("Bitmap error: " + e.getMessage());
+        }
+    }
+
+    private static Bitmap resizeImage(Bitmap bitmap, int w, int h) {
+        Bitmap BitmapOrg = bitmap;
+        int width = BitmapOrg.getWidth();
+        int height = BitmapOrg.getHeight();
+
+        if (width > w) {
+            float scaleWidth = ((float) w) / width;
+            float scaleHeight = ((float) h) / height + 24;
+            Matrix matrix = new Matrix();
+            matrix.postScale(scaleWidth, scaleWidth);
+            Bitmap resizedBitmap = Bitmap.createBitmap(BitmapOrg, 0, 0, width,
+                    height, matrix, true);
+            return resizedBitmap;
+        } else {
+            Bitmap resizedBitmap = Bitmap.createBitmap(w, height + 24, Bitmap.Config.RGB_565);
+            Canvas canvas = new Canvas(resizedBitmap);
+            Paint paint = new Paint();
+            canvas.drawColor(Color.WHITE);
+            canvas.drawBitmap(bitmap, (w - width) / 2, 0, paint);
+            return resizedBitmap;
         }
     }
 
