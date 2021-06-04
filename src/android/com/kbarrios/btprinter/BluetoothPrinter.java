@@ -1,10 +1,8 @@
 package com.kbarrios.btprinter;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -32,9 +30,9 @@ import android.util.Log;
 import com.zebra.sdk.comm.*;
 import com.zebra.sdk.printer.*;
 
-public class ZebraBluetoothPrinter extends CordovaPlugin {
+public class BluetoothPrinter extends CordovaPlugin {
 
-    private static final String LOG_TAG = "ZebraBluetoothPrinter";
+    private static final String LOG_TAG = "BluetoothPrinter";
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private static final int REQUEST_ENABLE_BT = 0;
 
@@ -42,7 +40,7 @@ public class ZebraBluetoothPrinter extends CordovaPlugin {
             "1001", "1010", "1011", "1100", "1101", "1110", "1111" };
     private static String hexStr = "0123456789ABCDEF";
 
-    public ZebraBluetoothPrinter() {
+    public BluetoothPrinter() {
     }
 
     @Override

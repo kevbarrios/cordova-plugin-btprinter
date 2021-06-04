@@ -1,17 +1,17 @@
 var exec = require('cordova/exec');
 
 exports.find = function(successCallback, errorCallback) {
-    cordova.exec(successCallback, errorCallback, 'ZebraBluetoothPrinter', 'find', []);
+    cordova.exec(successCallback, errorCallback, 'BluetoothPrinter', 'find', []);
 };
 
 exports.print = function(mac, str, successCallback, errorCallback) {
-    cordova.exec(successCallback, errorCallback, 'ZebraBluetoothPrinter', 'printZPL', [mac, str]);
+    cordova.exec(successCallback, errorCallback, 'BluetoothPrinter', 'printZPL', [mac, str]);
 };
 
 exports.print = function(mac, str, successCallback, errorCallback) {
-    cordova.exec(successCallback, errorCallback, 'ZebraBluetoothPrinter', 'printText', [mac, str]);
+    cordova.exec(successCallback, errorCallback, 'BluetoothPrinter', 'printText', [mac, str]);
 };
 
 exports.printImage = function(mac, str, successCallback, errorCallback) {
-    cordova.exec(successCallback, errorCallback, 'ZebraBluetoothPrinter', 'printImage', [mac, str]);
+    cordova.exec(successCallback, errorCallback, 'BluetoothPrinter', 'printImage', [mac, str]);
 };
