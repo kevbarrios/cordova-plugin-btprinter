@@ -1,5 +1,5 @@
 {
-  "version": "1.0.6",
+  "version": "1.0.7",
   "name": "cordova-plugin-btprinter",
   "description": "Cordova/Phonegap driver for bluetooth printers",
   "repository": {
@@ -22,7 +22,10 @@
     "android",
     "install",
     "ecosystem:cordova",
-    "cordova-android"
+    "cordova-android",
+    "btprinter",
+    "image",
+    "zpl"
   ],
   "engines": [
     {

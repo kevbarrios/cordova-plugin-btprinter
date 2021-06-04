@@ -7,7 +7,7 @@ Example:
 
 List Linked Devices:
 ```
-window.cordova.plugins.zbtprinter.find(
+window.cordova.plugins.btprinter.find(
   (data) => {
     alert(JSON.stringify(data)); 
     console.log(data);
@@ -20,7 +20,7 @@ window.cordova.plugins.zbtprinter.find(
 
 Printer ZPL:
 ```
-cordova.plugins.zbtprinter.printZPL("AC:3F:A4:52:73:C4","^XA^FO10,10^AFN,26,13^FDHello, World!^FS^XZ",
+cordova.plugins.btprinter.printZPL("AC:3F:A4:52:73:C4","^XA^FO10,10^AFN,26,13^FDHello, World!^FS^XZ",
     (success) => { 
         console.log("Print ZPL ok"); 
     }, function(fail) => { 
@@ -31,7 +31,7 @@ cordova.plugins.zbtprinter.printZPL("AC:3F:A4:52:73:C4","^XA^FO10,10^AFN,26,13^F
 
 Printer Text:
 ```
-cordova.plugins.zbtprinter.printText("AC:3F:A4:52:73:C4","Hello, World!",
+cordova.plugins.btprinter.printText("AC:3F:A4:52:73:C4","Hello, World!",
     (success) => { 
         console.log("Print Text ok"); 
     }, function(fail) => { 
@@ -42,7 +42,7 @@ cordova.plugins.zbtprinter.printText("AC:3F:A4:52:73:C4","Hello, World!",
 
 Printer Image:
 ```
-cordova.plugins.zbtprinter.printText("AC:3F:A4:52:73:C4","data:image/jpg;base64, ....",
+cordova.plugins.btprinter.printText("AC:3F:A4:52:73:C4","data:image/jpg;base64, ....",
     (success) => { 
         console.log("Print Image ok"); 
     }, function(fail) => { 
@@ -54,15 +54,15 @@ cordova.plugins.zbtprinter.printText("AC:3F:A4:52:73:C4","data:image/jpg;base64,
 Install Cordova
 
 ```
-cordova plugin add https://github.com/kevbarrios/cordova-plugin-zebra_printer_zpl.git
+cordova plugin add https://github.com/kevbarrios/cordova-plugin-btprinter.git
 
-cordova plugin add cordova-plugin-zebra_printer_zpl
+cordova plugin add cordova-plugin-btprinter
 ```
 
 config.xml
 
 ```
-<plugin name="com.github.kevbarrios.zbtprinter" spec="cordova-plugin-zebra_printer_zpl@^1.0.5" />
+<plugin name="com.kbarrios.btprinter" spec="cordova-plugin-btprinter@^1.0.7" />
 ```
 
 ZPL - Zebra Programming Language
