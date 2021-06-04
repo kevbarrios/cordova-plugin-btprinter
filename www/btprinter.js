@@ -4,11 +4,11 @@ exports.find = function(successCallback, errorCallback) {
     cordova.exec(successCallback, errorCallback, 'BluetoothPrinter', 'find', []);
 };
 
-exports.print = function(mac, str, successCallback, errorCallback) {
+exports.printZPL = function(mac, str, successCallback, errorCallback) {
     cordova.exec(successCallback, errorCallback, 'BluetoothPrinter', 'printZPL', [mac, str]);
 };
 
-exports.print = function(mac, str, successCallback, errorCallback) {
+exports.printText = function(mac, str, successCallback, errorCallback) {
     cordova.exec(successCallback, errorCallback, 'BluetoothPrinter', 'printText', [mac, str]);
 };
 
