@@ -23,7 +23,7 @@ Printer ZPL:
 cordova.plugins.btprinter.printZPL("AC:3F:A4:52:73:C4","^XA^FO10,10^AFN,26,13^FDHello, World!^FS^XZ",
     (success) => { 
         console.log("Print ZPL ok"); 
-    }, function(fail) => { 
+    }, (fail) => { 
         console.log(fail); 
     }
 );
@@ -34,7 +34,7 @@ Printer Text:
 cordova.plugins.btprinter.printText("AC:3F:A4:52:73:C4","Hello, World!",
     (success) => { 
         console.log("Print Text ok"); 
-    }, function(fail) => { 
+    }, (fail) => { 
         console.log(fail); 
     }
 );
@@ -42,10 +42,10 @@ cordova.plugins.btprinter.printText("AC:3F:A4:52:73:C4","Hello, World!",
 
 Printer Image:
 ```
-cordova.plugins.btprinter.printText("AC:3F:A4:52:73:C4","data:image/jpg;base64, ....",
+cordova.plugins.btprinter.printImage("AC:3F:A4:52:73:C4","data:image/jpg;base64, ....",
     (success) => { 
         console.log("Print Image ok"); 
-    }, function(fail) => { 
+    }, (fail) => { 
         console.log(fail); 
     }
 );
